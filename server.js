@@ -119,18 +119,78 @@
 
 
 
-// server.js
+// // server.js
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const cors = require("cors");
+// require("dotenv").config();
+// const path = require("path");
+
+// const app = express();
+
+// // Middleware
+// app.use(cors({ origin: "http://localhost:5173" })); // allow your React dev server
+// app.use(express.json()); // parse JSON
+
+// // MongoDB connection
+// mongoose.connect(process.env.MONGO_URI)
+//   .then(() => console.log("✅ MongoDB Connected"))
+//   .catch((err) => console.log("❌ DB Error:", err));
+
+// // Model
+// const Inquiry = require("./models/Inquiry");
+
+// // POST route
+// app.post("/api/inquiry", async (req, res) => {
+//   console.log("Received form data:", req.body);
+
+//   try {
+//     const newInquiry = new Inquiry(req.body);
+//     const saved = await newInquiry.save();
+//     console.log("Saved inquiry:", saved);
+
+//     res.status(201).json({
+//       message: "✅ Thank you! We received your information and will reply soon."
+//     });
+//   } catch (error) {
+//     console.log("Error saving inquiry:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// });
+
+// // Optional: serve React build in production
+// // app.use(express.static(path.join(__dirname, "build")));
+// app.get("*", (req, res) => {
+//   // res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
+
+// // Start server
+// const PORT = process.env.PORT || 5004;
+// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+// app.get("/", (req, res) => {
+//   res.send("Portfolio backend is running 🚀");
+// });
+
+
+
+
+
+
+
+
+
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-const path = require("path");
 
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173" })); // allow your React dev server
-app.use(express.json()); // parse JSON
+app.use(cors());
+app.use(express.json());
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
@@ -140,6 +200,11 @@ mongoose.connect(process.env.MONGO_URI)
 // Model
 const Inquiry = require("./models/Inquiry");
 
+// Test route
+app.get("/", (req, res) => {
+  res.send("Portfolio backend is running 🚀");
+});
+
 // POST route
 app.post("/api/inquiry", async (req, res) => {
   console.log("Received form data:", req.body);
@@ -147,7 +212,6 @@ app.post("/api/inquiry", async (req, res) => {
   try {
     const newInquiry = new Inquiry(req.body);
     const saved = await newInquiry.save();
-    console.log("Saved inquiry:", saved);
 
     res.status(201).json({
       message: "✅ Thank you! We received your information and will reply soon."
@@ -158,12 +222,20 @@ app.post("/api/inquiry", async (req, res) => {
   }
 });
 
-// Optional: serve React build in production
-app.use(express.static(path.join(__dirname, "build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 // Start server
 const PORT = process.env.PORT || 5004;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
