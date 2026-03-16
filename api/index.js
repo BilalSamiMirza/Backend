@@ -226,45 +226,21 @@
 // const PORT = process.env.PORT || 5004;
 // app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 
-
-
-
-
-
-
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.log(err));
-
-const Inquiry = require("../models/Inquiry");
-
-app.get("/", (req,res)=>{
+app.get("/", (req, res) => {
   res.send("Portfolio backend is running 🚀");
 });
 
-app.post("/api/inquiry", async(req,res)=>{
-  try{
-    const newInquiry = new Inquiry(req.body);
-    await newInquiry.save();
-
-    res.status(201).json({
-      message:"Thank you! We received your information."
-    });
-
-  }catch(error){
-    res.status(500).json({message:error.message});
-  }
+app.post("/api/inquiry", (req, res) => {
+  res.json({ message: "Inquiry received" });
 });
 
 module.exports = app;
