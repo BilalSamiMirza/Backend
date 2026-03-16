@@ -249,7 +249,7 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("MongoDB Connected"))
 .catch(err => console.log(err));
 
-const Inquiry = require("./models/Inquiry");
+const Inquiry = require("../models/Inquiry");
 
 app.get("/", (req,res)=>{
   res.send("Portfolio backend is running 🚀");
