@@ -233,8 +233,6 @@
 
 
 
-
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -270,6 +268,4 @@ app.post("/api/inquiry", async(req,res)=>{
 });
 
 module.exports = app;
-
-
 
