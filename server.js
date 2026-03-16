@@ -181,6 +181,67 @@
 
 
 
+// const express = require("express");
+// const mongoose = require("mongoose");
+// const cors = require("cors");
+// require("dotenv").config();
+
+// const app = express();
+
+// // Middleware
+// app.use(cors());
+// app.use(express.json());
+
+
+// // MongoDB connection
+// mongoose.connect(process.env.MONGO_URI)
+//   .then(() => console.log("✅ MongoDB Connected"))
+//   .catch((err) => console.log("❌ DB Error:", err));
+
+// // Model
+// const Inquiry = require("./models/Inquiry");
+
+// // Test route
+// app.get("/", (req, res) => {
+//   res.send("Portfolio backend is running 🚀");
+// });
+
+// // POST route
+// app.post("/api/inquiry", async (req, res) => {
+//   console.log("Received form data:", req.body);
+
+//   try {
+//     const newInquiry = new Inquiry(req.body);
+//     const saved = await newInquiry.save();
+
+//     res.status(201).json({
+//       message: "✅ Thank you! We received your information and will reply soon."
+//     });
+//   } catch (error) {
+//     console.log("Error saving inquiry:", error);
+//     res.status(500).json({ message: error.message });
+//   }
+// });
+
+// // Start server
+// const PORT = process.env.PORT || 5004;
+// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -197,7 +258,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ DB Error:", err));
 
-// Model
+// Import your existing model
 const Inquiry = require("./models/Inquiry");
 
 // Test route
@@ -205,17 +266,29 @@ app.get("/", (req, res) => {
   res.send("Portfolio backend is running 🚀");
 });
 
-// POST route
+// Optional GET route for testing in browser
+app.get("/api/inquiry", async (req, res) => {
+  try {
+    const inquiries = await Inquiry.find();
+    res.json(inquiries);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST route – save inquiry
 app.post("/api/inquiry", async (req, res) => {
-  console.log("Received form data:", req.body);
+  const { name, email, service, description } = req.body;
+
+  // Validate request body
+  if (!name || !email || !service || !description) {
+    return res.status(400).json({ message: "❌ All fields are required!" });
+  }
 
   try {
-    const newInquiry = new Inquiry(req.body);
-    const saved = await newInquiry.save();
-
-    res.status(201).json({
-      message: "✅ Thank you! We received your information and will reply soon."
-    });
+    const newInquiry = new Inquiry({ name, email, service, description });
+    await newInquiry.save();
+    res.status(201).json({ message: "✅ Thank you! We received your information." });
   } catch (error) {
     console.log("Error saving inquiry:", error);
     res.status(500).json({ message: error.message });
@@ -223,19 +296,6 @@ app.post("/api/inquiry", async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5004;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
-
-
-
-
-
-
-
-
-
-
-
-
 
