@@ -240,7 +240,6 @@
 
 
 
-
 // server.js
 const express = require("express");
 const mongoose = require("mongoose");
@@ -258,7 +257,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ DB Error:", err));
 
-// Import your existing model
+// Import existing Inquiry model
 const Inquiry = require("./models/Inquiry");
 
 // Test route
@@ -266,7 +265,7 @@ app.get("/", (req, res) => {
   res.send("Portfolio backend is running 🚀");
 });
 
-// Optional GET route for testing in browser
+// Optional GET route to view all inquiries
 app.get("/api/inquiry", async (req, res) => {
   try {
     const inquiries = await Inquiry.find();
@@ -276,7 +275,7 @@ app.get("/api/inquiry", async (req, res) => {
   }
 });
 
-// POST route – save inquiry
+// POST route – handle form submissions
 app.post("/api/inquiry", async (req, res) => {
   const { name, email, service, description } = req.body;
 
@@ -298,4 +297,3 @@ app.post("/api/inquiry", async (req, res) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
