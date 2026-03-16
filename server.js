@@ -181,67 +181,61 @@
 
 
 
-// const express = require("express");
-// const mongoose = require("mongoose");
-// const cors = require("cors");
-// require("dotenv").config();
-
-// const app = express();
-
-// // Middleware
-// app.use(cors());
-// app.use(express.json());
-
-// // MongoDB connection
-// mongoose.connect(process.env.MONGO_URI)
-//   .then(() => console.log("✅ MongoDB Connected"))
-//   .catch((err) => console.log("❌ DB Error:", err));
-
-// // Model
-// const Inquiry = require("./models/Inquiry");
-
-// // Test route
-// app.get("/", (req, res) => {
-//   res.send("Portfolio backend is running 🚀");
-// });
-
-// // POST route
-// app.post("/api/inquiry", async (req, res) => {
-//   console.log("Received form data:", req.body);
-
-//   try {
-//     const newInquiry = new Inquiry(req.body);
-//     const saved = await newInquiry.save();
-
-//     res.status(201).json({
-//       message: "✅ Thank you! We received your information and will reply soon."
-//     });
-//   } catch (error) {
-//     console.log("Error saving inquiry:", error);
-//     res.status(500).json({ message: error.message });
-//   }
-// });
-
-// // Start server
-// const PORT = process.env.PORT || 5004;
-// app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config();
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// MongoDB connection
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => console.log("❌ DB Error:", err));
+
+// Model
+const Inquiry = require("./models/Inquiry");
+
+// Test route
 app.get("/", (req, res) => {
   res.send("Portfolio backend is running 🚀");
 });
 
-app.post("/api/inquiry", (req, res) => {
-  res.json({ message: "Inquiry received" });
+// POST route
+app.post("/api/inquiry", async (req, res) => {
+  console.log("Received form data:", req.body);
+
+  try {
+    const newInquiry = new Inquiry(req.body);
+    const saved = await newInquiry.save();
+
+    res.status(201).json({
+      message: "✅ Thank you! We received your information and will reply soon."
+    });
+  } catch (error) {
+    console.log("Error saving inquiry:", error);
+    res.status(500).json({ message: error.message });
+  }
 });
 
-module.exports = app;
+// Start server
+const PORT = process.env.PORT || 5004;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+
+
+
+
+
+
+
+
+
+
+
+
 
